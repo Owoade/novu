@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 RUN apk add --no-cache bash
 RUN npm install -g pnpm@8.9.0 --loglevel notice
 
-COPY .npmrc .
+# COPY .npmrc .
 COPY package.json .
 
 COPY apps/web ./apps/web
@@ -24,11 +24,11 @@ COPY packages/stateless ./packages/stateless
 COPY packages/node ./packages/node
 
 COPY tsconfig.json .
-COPY tsconfig.base.json .
+# COPY tsconfig.base.json .
 
-COPY nx.json .
-COPY pnpm-workspace.yaml .
-COPY pnpm-lock.yaml .
+# COPY nx.json .
+# COPY pnpm-workspace.yaml .
+# COPY pnpm-lock.yaml .
 
 RUN --mount=type=cache,id=pnpm-store-web,target=/root/.pnpm-store\
   pnpm install --frozen-lockfile
