@@ -43,13 +43,23 @@ jobs:
     secrets: inherit
 
   publish_docker_image_web:
-    needs: test_web
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
-    uses: ./.github/workflows/reusable-docker.yml
-    with:
-      environment: Development
-      package_name: novu/web
-      project_path: apps/web
-      local_tag: novu-web
-      env_tag: dev
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      - uses: docker/setup-qemu-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: 'image=moby/buildkit:v0.12.4'
+
+      - name: Build docker image
+        run: |
+          echo ${{ secrets.ACR_PASSWORD }} | docker login autovendyrepo.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+          cd apps/web && npm run docker:build
+          docker tag novu-web autovendyrepo.azurecr.io/novu-web:1
+          docker push autovendyrepo.azurecr.io/novu-web:1
+    
+    
