@@ -58,7 +58,7 @@ jobs:
       - name: Build docker image
         run: |
           echo ${{ secrets.ACR_PASSWORD }} | docker login autovendyrepo.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
-          cd apps/web && docker buildx build --load --platform=linux/amd64,linux/arm64 --provenance=false -f ./Dockerfile -t novu-web ./../..
+          cd apps/web && docker build --load --platform=linux/amd64,linux/arm64 --provenance=false -f ./Dockerfile -t novu-web ./../..
           docker tag novu-web autovendyrepo.azurecr.io/novu-web:1
           docker push autovendyrepo.azurecr.io/novu-web:1
     
