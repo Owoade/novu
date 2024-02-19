@@ -24,18 +24,18 @@ COPY packages/stateless ./packages/stateless
 COPY packages/node ./packages/node
 
 COPY tsconfig.json .
-# COPY tsconfig.base.json .
+COPY tsconfig.base.json .
 
-# COPY nx.json .
-# COPY pnpm-workspace.yaml .
-# COPY pnpm-lock.yaml .
+COPY nx.json .
+COPY pnpm-workspace.yaml .
+COPY pnpm-lock.yaml .
 
 RUN --mount=type=cache,id=pnpm-store-web,target=/root/.pnpm-store\
   pnpm install --frozen-lockfile
 
 RUN pnpm add @babel/core -w
 
-# COPY [".eslintrc.js",".prettierrc",".prettierignore", "./"]
+COPY [".eslintrc.js",".prettierrc",".prettierignore", "./"]
 
 RUN NX_DAEMON=false pnpm build:web
 # end build stage
