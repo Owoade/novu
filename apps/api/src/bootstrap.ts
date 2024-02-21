@@ -84,7 +84,7 @@ export async function bootstrap(expressApp?): Promise<INestApplication> {
   }
 
   app.use(helmet());
-  app.enableCors(corsOptionsDelegate);
+  app.enableCors();
 
   app.setGlobalPrefix(CONTEXT_PATH + 'v1');
 
